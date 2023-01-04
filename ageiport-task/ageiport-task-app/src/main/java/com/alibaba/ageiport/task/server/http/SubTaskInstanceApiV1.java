@@ -7,6 +7,7 @@ import com.alibaba.ageiport.task.server.service.SubTaskInstanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class SubTaskInstanceApiV1 {
     }
 
     @PostMapping("/CreateSubTaskInstances")
-    public  CreateSubTaskInstancesResponse createMainTaskInstances(CreateSubTaskInstancesRequest request) {
+    public  CreateSubTaskInstancesResponse createMainTaskInstances(@RequestBody CreateSubTaskInstancesRequest request) {
         Objects.requireNonNull(request);
         try{
             return this.subTaskInstanceService.save(request);
@@ -45,7 +46,7 @@ public class SubTaskInstanceApiV1 {
     }
 
     @PostMapping("/GetSubTaskInstance")
-    public GetSubTaskInstanceResponse getSubTaskInstance(GetSubTaskInstanceRequest request) {
+    public GetSubTaskInstanceResponse getSubTaskInstance(@RequestBody GetSubTaskInstanceRequest request) {
         Objects.requireNonNull(request);
 
         try{
@@ -62,7 +63,7 @@ public class SubTaskInstanceApiV1 {
 
 
     @PostMapping("/UpdateSubTaskInstance")
-    public UpdateSubTaskInstanceResponse updateMainTaskInstance(UpdateSubTaskInstanceRequest request) {
+    public UpdateSubTaskInstanceResponse updateMainTaskInstance(@RequestBody UpdateSubTaskInstanceRequest request) {
         Objects.requireNonNull(request);
         GetSubTaskInstanceRequest getSubTaskInstanceRequest = BeanUtils.cloneProp(request,GetSubTaskInstanceRequest.class);
         GetSubTaskInstanceResponse getSubTaskInstanceResponse =  this.subTaskInstanceService.findBySubTaskId(getSubTaskInstanceRequest);

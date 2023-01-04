@@ -8,6 +8,7 @@ import com.alibaba.ageiport.task.server.service.MainTaskInstanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class MainTaskInstanceApiV1 {
     }
 
     @PostMapping("/CreateMainTaskInstance")
-    public CreateMainTaskInstanceResponse createMainTaskInstance(CreateMainTaskInstanceRequest request) {
+    public CreateMainTaskInstanceResponse createMainTaskInstance(@RequestBody CreateMainTaskInstanceRequest request) {
         Objects.requireNonNull(request);
       String  mainTaskId =  this.mainTaskInstanceService.save(request);
         if(Objects.nonNull(mainTaskId)){
@@ -50,7 +51,7 @@ public class MainTaskInstanceApiV1 {
     }
 
     @PostMapping("/GetMainTaskInstance")
-    public GetMainTaskInstanceResponse getMainTaskInstance(GetMainTaskInstanceRequest request) {
+    public GetMainTaskInstanceResponse getMainTaskInstance(@RequestBody GetMainTaskInstanceRequest request) {
         Objects.requireNonNull(request);
         try{
             return this.mainTaskInstanceService.findByMainTaskId(request);
@@ -66,7 +67,7 @@ public class MainTaskInstanceApiV1 {
 
 
     @PostMapping("/UpdateMainTaskInstance")
-    public UpdateMainTaskInstanceResponse updateMainTaskInstance(UpdateMainTaskInstanceRequest request) {
+    public UpdateMainTaskInstanceResponse updateMainTaskInstance(@RequestBody UpdateMainTaskInstanceRequest request) {
         Objects.requireNonNull(request);
         GetMainTaskInstanceRequest getMainTaskInstanceRequest = BeanUtils.cloneProp(request,GetMainTaskInstanceRequest.class);
         GetMainTaskInstanceResponse getMainTaskInstanceResponse =  this.mainTaskInstanceService.findByMainTaskId(getMainTaskInstanceRequest);

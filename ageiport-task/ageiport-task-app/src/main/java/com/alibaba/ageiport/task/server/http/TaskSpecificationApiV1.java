@@ -8,6 +8,7 @@ import com.alibaba.ageiport.task.server.service.TaskSpecificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class TaskSpecificationApiV1 {
     }
 
     @PostMapping("/CreateTaskSpecification")
-    public CreateTaskSpecificationResponse createTaskSpecification(CreateTaskSpecificationRequest request) {
+    public CreateTaskSpecificationResponse createTaskSpecification(@RequestBody CreateTaskSpecificationRequest request) {
         Objects.requireNonNull(request);
         try{
             return this.taskSpecificationService.save(request);
@@ -45,7 +46,7 @@ public class TaskSpecificationApiV1 {
     }
 
     @PostMapping("/GetTaskSpecification")
-    public GetTaskSpecificationResponse getTaskSpecification(GetTaskSpecificationRequest request) {
+    public GetTaskSpecificationResponse getTaskSpecification(@RequestBody GetTaskSpecificationRequest request) {
         Objects.requireNonNull(request);
         try {
            return this.taskSpecificationService.findByTaskCode(request);

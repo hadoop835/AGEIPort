@@ -63,7 +63,7 @@ public class MainTaskInstanceServiceImpl implements MainTaskInstanceService {
         wrapper.eq("namespace",request.getNamespace());
         wrapper.eq("app",request.getApp());
         wrapper.eq("env",this.taskServerConfig.getEnv());
-        wrapper.eq("id",request.getMainTaskId());
+        wrapper.eq("main_task_id",request.getMainTaskId());
         MainTaskInstanceEntity entity = this.mainTaskInstanceRepository.selectOne(wrapper);
         GetMainTaskInstanceResponse response = new GetMainTaskInstanceResponse();
         response.setSuccess(true);
