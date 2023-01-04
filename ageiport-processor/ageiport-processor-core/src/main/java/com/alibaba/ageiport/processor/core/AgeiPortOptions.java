@@ -37,11 +37,15 @@ public class AgeiPortOptions {
 
     private String namespace;
 
+    private String  tenant;
+
     private String app;
 
     private String accessKeyId;
 
     private String accessKeySecret;
+
+
 
     private ClusterOptions clusterOptions = new DefaultClusterOptions();
 

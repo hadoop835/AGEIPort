@@ -142,7 +142,7 @@ public class HttpTaskServerClient implements TaskServerClient {
         request.setApp(options.getApp());
         request.setNamespace(options.getNamespace());
         request.setDomain(domain);
-
+        request.setTenant(options.getTenant());
         String json = JsonUtil.toJsonString(request);
         RequestBody body = RequestBody.create(json, JSON);
 
