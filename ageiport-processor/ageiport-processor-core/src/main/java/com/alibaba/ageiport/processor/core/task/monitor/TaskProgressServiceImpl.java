@@ -115,15 +115,15 @@ public class TaskProgressServiceImpl implements TaskProgressService {
             mainTaskProgress.addSubTaskProgress(subTaskProgress);
         }
         Stage oldStage = subTaskStageProvider.getStage(subTaskProgress.getStageCode());
-
-        TaskProgressLog subLog = createLog(event, newStage);
-        subTaskProgress.addLog(subLog);
-        subTaskProgress.setStageCode(newStage.getCode());
-        subTaskProgress.setStageName(newStage.getName());
-        subTaskProgress.setIsFinished(newStage.isFinished());
-        subTaskProgress.setIsError(newStage.isError());
-        subTaskProgress.setPercent(newStage.getMaxPercent());
-
+        if(newStage.isFinished() || newStage.isError()){
+            TaskProgressLog subLog = createLog(event, newStage);
+            subTaskProgress.addLog(subLog);
+            subTaskProgress.setStageCode(newStage.getCode());
+            subTaskProgress.setStageName(newStage.getName());
+            subTaskProgress.setIsFinished(newStage.isFinished());
+            subTaskProgress.setIsError(newStage.isError());
+            subTaskProgress.setPercent(newStage.getMaxPercent());
+        }
         monitor.onSubTaskChanged(mainTaskProgress, oldStage, newStage, mainStage);
     }
 
