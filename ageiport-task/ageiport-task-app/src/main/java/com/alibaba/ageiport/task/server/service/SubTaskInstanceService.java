@@ -12,5 +12,5 @@ public interface SubTaskInstanceService {
 
     GetSubTaskInstanceResponse findBySubTaskId(GetSubTaskInstanceRequest request);
 
-    UpdateSubTaskInstanceResponse update(UpdateSubTaskInstanceRequest request);
+    UpdateSubTaskInstanceResponse update(UpdateSubTaskInstanceRequest request,GetSubTaskInstanceResponse getSubTaskInstanceResponse);
 }

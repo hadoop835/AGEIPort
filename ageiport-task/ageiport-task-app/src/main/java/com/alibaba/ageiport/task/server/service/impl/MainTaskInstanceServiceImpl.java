@@ -75,8 +75,8 @@ public class MainTaskInstanceServiceImpl implements MainTaskInstanceService {
     }
 
     @Override
-    public UpdateMainTaskInstanceResponse update(UpdateMainTaskInstanceRequest request) {
-        MainTaskInstanceEntity mainTaskInstanceEntity =  modifyEntity(request,this.taskServerConfig.getEnv());
+    public UpdateMainTaskInstanceResponse update(UpdateMainTaskInstanceRequest request,GetMainTaskInstanceResponse getMainTaskInstanceResponse) {
+        MainTaskInstanceEntity mainTaskInstanceEntity =  modifyEntity(request,getMainTaskInstanceResponse,this.taskServerConfig.getEnv());
        int success =  this.mainTaskInstanceRepository.updateById(mainTaskInstanceEntity);
         UpdateMainTaskInstanceResponse response = new UpdateMainTaskInstanceResponse();
        if(success > 0){
@@ -89,8 +89,8 @@ public class MainTaskInstanceServiceImpl implements MainTaskInstanceService {
     }
 
 
-    private static MainTaskInstanceEntity modifyEntity(UpdateMainTaskInstanceRequest request,String env) {
-        MainTaskInstanceEntity entity = BeanUtils.cloneProp(request,MainTaskInstanceEntity.class);
+    private static MainTaskInstanceEntity modifyEntity(UpdateMainTaskInstanceRequest request,GetMainTaskInstanceResponse getMainTaskInstanceResponse,String env) {
+        MainTaskInstanceEntity entity = BeanUtils.cloneProp(getMainTaskInstanceResponse.getData(),MainTaskInstanceEntity.class);
         entity.setEnv(env);
         if (StringUtils.isNotBlank(request.getBizTaskName())) {
             entity.setBizTaskName(request.getBizTaskName());

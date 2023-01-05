@@ -22,7 +22,10 @@ public class GetSubTaskInstanceResponse extends Response {
     @Setter
     @Getter
     public static class Data {
-
+        /**
+         * 主键
+         */
+        private Long id;
         /**
          * 租户
          */

@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <version>0.0.4</version>
     <modules>
-        <module>ageiport-task-server</module>
         <module>ageiport-task-server-model</module>
+        <module>ageiport-task-app</module>
     </modules>
 </project>

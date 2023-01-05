@@ -43,7 +43,7 @@ public class SubTaskInstanceServiceImpl implements SubTaskInstanceService {
         wrapper.eq("namespace",request.getNamespace());
         wrapper.eq("app",request.getApp());
         wrapper.eq("env",this.taskServerConfig.getEnv());
-        wrapper.eq("id",request.getMainTaskId());
+        wrapper.eq("main_task_id",request.getMainTaskId());
         CreateSubTaskInstancesResponse response = new CreateSubTaskInstancesResponse();
         MainTaskInstanceEntity mainTaskInstanceEntity =  this.mainTaskInstanceRepository.selectOne(wrapper);
         if(Objects.nonNull(mainTaskInstanceEntity)){
@@ -89,7 +89,7 @@ public class SubTaskInstanceServiceImpl implements SubTaskInstanceService {
         wrapper.eq("namespace",request.getNamespace());
         wrapper.eq("app",request.getApp());
         wrapper.eq("env",this.taskServerConfig.getEnv());
-        wrapper.eq("id",request.getSubTaskId());
+        wrapper.eq("sub_task_id",request.getSubTaskId());
         SubTaskInstanceEntity entity = this.subTaskInstanceRepository.selectOne(wrapper);
         GetSubTaskInstanceResponse response = new GetSubTaskInstanceResponse();
         response.setSuccess(true);
@@ -101,8 +101,8 @@ public class SubTaskInstanceServiceImpl implements SubTaskInstanceService {
     }
 
     @Override
-    public UpdateSubTaskInstanceResponse update(UpdateSubTaskInstanceRequest request) {
-        SubTaskInstanceEntity subTaskInstanceEntity =  modifyEntity(request,this.taskServerConfig.getEnv());
+    public UpdateSubTaskInstanceResponse update(UpdateSubTaskInstanceRequest request,GetSubTaskInstanceResponse getSubTaskInstanceResponse) {
+        SubTaskInstanceEntity subTaskInstanceEntity =  modifyEntity(request,getSubTaskInstanceResponse,this.taskServerConfig.getEnv());
         int success =  this.subTaskInstanceRepository.updateById(subTaskInstanceEntity);
         UpdateSubTaskInstanceResponse response = new UpdateSubTaskInstanceResponse();
         if(success > 0){
@@ -115,8 +115,8 @@ public class SubTaskInstanceServiceImpl implements SubTaskInstanceService {
     }
 
 
-    private static SubTaskInstanceEntity modifyEntity(UpdateSubTaskInstanceRequest request, String env) {
-        SubTaskInstanceEntity entity = BeanUtils.cloneProp(request,SubTaskInstanceEntity.class);
+    private static SubTaskInstanceEntity modifyEntity(UpdateSubTaskInstanceRequest request,GetSubTaskInstanceResponse getSubTaskInstanceResponse, String env) {
+        SubTaskInstanceEntity entity = BeanUtils.cloneProp(getSubTaskInstanceResponse,SubTaskInstanceEntity.class);
         entity.setEnv(env);
         if (request.getDataTotalCount() != null) {
             entity.setDataTotalCount(request.getDataTotalCount());

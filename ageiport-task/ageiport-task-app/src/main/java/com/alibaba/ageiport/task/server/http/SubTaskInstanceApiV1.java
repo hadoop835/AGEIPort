@@ -30,7 +30,7 @@ public class SubTaskInstanceApiV1 {
     }
 
     @PostMapping("/CreateSubTaskInstances")
-    public  CreateSubTaskInstancesResponse createMainTaskInstances(@RequestBody CreateSubTaskInstancesRequest request) {
+    public  CreateSubTaskInstancesResponse createSubTaskInstances(@RequestBody CreateSubTaskInstancesRequest request) {
         Objects.requireNonNull(request);
         try{
             return this.subTaskInstanceService.save(request);
@@ -48,7 +48,6 @@ public class SubTaskInstanceApiV1 {
     @PostMapping("/GetSubTaskInstance")
     public GetSubTaskInstanceResponse getSubTaskInstance(@RequestBody GetSubTaskInstanceRequest request) {
         Objects.requireNonNull(request);
-
         try{
             return this.subTaskInstanceService.findBySubTaskId(request);
         }catch (Exception ex){
@@ -63,7 +62,7 @@ public class SubTaskInstanceApiV1 {
 
 
     @PostMapping("/UpdateSubTaskInstance")
-    public UpdateSubTaskInstanceResponse updateMainTaskInstance(@RequestBody UpdateSubTaskInstanceRequest request) {
+    public UpdateSubTaskInstanceResponse updateSubTaskInstance(@RequestBody UpdateSubTaskInstanceRequest request) {
         Objects.requireNonNull(request);
         GetSubTaskInstanceRequest getSubTaskInstanceRequest = BeanUtils.cloneProp(request,GetSubTaskInstanceRequest.class);
         GetSubTaskInstanceResponse getSubTaskInstanceResponse =  this.subTaskInstanceService.findBySubTaskId(getSubTaskInstanceRequest);
@@ -74,7 +73,7 @@ public class SubTaskInstanceApiV1 {
             return response;
         }
         try{
-            return this.subTaskInstanceService.update(request);
+            return this.subTaskInstanceService.update(request,getSubTaskInstanceResponse);
         }catch (Exception ex){
             log.error("SubTaskInstanceApiV1#updateMainTaskInstance failed, request:{}", request, ex);
             UpdateSubTaskInstanceResponse response = new UpdateSubTaskInstanceResponse();

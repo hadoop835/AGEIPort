@@ -78,7 +78,8 @@ public class MainTaskInstanceApiV1 {
             return response;
         }
         try{
-            return this.mainTaskInstanceService.update(request);
+
+            return this.mainTaskInstanceService.update(request,getMainTaskInstanceResponse);
         }catch (Exception ex){
             log.error("MainTaskInstanceApiV1#updateMainTaskInstance failed, request:{}", request, ex);
             UpdateMainTaskInstanceResponse response = new UpdateMainTaskInstanceResponse();

@@ -10,5 +10,5 @@ public interface MainTaskInstanceService {
 
     GetMainTaskInstanceResponse findByMainTaskId(GetMainTaskInstanceRequest request);
 
-    UpdateMainTaskInstanceResponse update(UpdateMainTaskInstanceRequest request);
+    UpdateMainTaskInstanceResponse update(UpdateMainTaskInstanceRequest request,GetMainTaskInstanceResponse response);
 }

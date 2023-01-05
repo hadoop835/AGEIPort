@@ -65,7 +65,7 @@ public class TaskSpecificationServiceImpl implements TaskSpecificationService {
         wrapper.eq("namespace",request.getNamespace());
         wrapper.eq("app",request.getApp());
         wrapper.eq("env",this.taskServerConfig.getEnv());
-        wrapper.eq("taskCode",request.getTaskCode());
+        wrapper.eq("task_code",request.getTaskCode());
         TaskSpecificationEntity taskSpecificationEntity =  this.taskSpecificationRepository.selectOne(wrapper);
         GetTaskSpecificationResponse response = new GetTaskSpecificationResponse();
         response.setSuccess(true);

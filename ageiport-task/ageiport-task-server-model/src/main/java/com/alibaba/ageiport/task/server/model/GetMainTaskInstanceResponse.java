@@ -24,6 +24,10 @@ public class GetMainTaskInstanceResponse extends Response {
     @Getter
     @Setter
     public static class Data {
+        /**
+         * 主键
+         */
+        public Long id;
 
         /**
          * 租户
