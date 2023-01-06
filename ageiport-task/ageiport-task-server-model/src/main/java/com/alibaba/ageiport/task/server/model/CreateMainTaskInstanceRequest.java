@@ -94,6 +94,10 @@ public class CreateMainTaskInstanceRequest extends Request<CreateMainTaskInstanc
      * 运行时参数
      */
     private String runtimeParam;
+    /**
+     * 保存参数
+     */
+    private String feature;
 
     public CreateMainTaskInstanceRequest() {
         System.out.println("1");

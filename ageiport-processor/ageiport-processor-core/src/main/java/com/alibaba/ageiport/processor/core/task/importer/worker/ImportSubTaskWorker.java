@@ -26,9 +26,7 @@ import com.alibaba.ageiport.processor.core.task.importer.model.BizImportResult;
 import com.alibaba.ageiport.processor.core.task.importer.model.BizImportResultImpl;
 import com.alibaba.ageiport.processor.core.task.importer.model.ImportTaskSpecification;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author lingyi
@@ -107,6 +105,7 @@ public class ImportSubTaskWorker<QUERY, DATA, VIEW> extends AbstractSubTaskWorke
 
             context.goNextStageEventNew();
             List<DataGroup.Data> groupData = outputDataGroup.getData();
+
             if (CollectionUtils.isNotEmpty(groupData)) {
                 boolean hasItems = false;
                 for (DataGroup.Data groupDatum : groupData) {
@@ -122,6 +121,23 @@ public class ImportSubTaskWorker<QUERY, DATA, VIEW> extends AbstractSubTaskWorke
 
             context.goNextStageEventNew();
             context.assertCurrentStage(stageProvider.subTaskFinished());
+            int subCountTotal = 0;
+            if(Objects.nonNull(writeResult)){
+                List<DATA> writeData = writeResult.getData();
+                if(CollectionUtils.isNotEmpty(writeData)){
+                    int len = writeData.size();
+                    subCountTotal+=len;
+                    subTask.setDataSuccessCount(len);
+                }
+                List<VIEW> errorData = writeResult.getView();
+                if(CollectionUtils.isNotEmpty(errorData)){
+                    int len = errorData.size();
+                    subCountTotal+=len;
+                    subTask.setDataFailedCount(len);
+                }
+            }
+            subTask.setDataTotalCount(subCountTotal);
+            onFinished(context,subTask);
         } catch (Throwable e) {
             log.info("doMappingProcess failed, main:{}, sub:{}", subTask.getMainTaskId(), subTask.getSubTaskId(), e);
             subTask.setStatus(TaskStatus.ERROR).setResultMessage(e.getMessage()).setGmtFinished(new Date());
