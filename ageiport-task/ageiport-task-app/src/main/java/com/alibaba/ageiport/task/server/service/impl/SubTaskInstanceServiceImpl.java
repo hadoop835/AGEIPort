@@ -116,7 +116,7 @@ public class SubTaskInstanceServiceImpl implements SubTaskInstanceService {
 
 
     private static SubTaskInstanceEntity modifyEntity(UpdateSubTaskInstanceRequest request,GetSubTaskInstanceResponse getSubTaskInstanceResponse, String env) {
-        SubTaskInstanceEntity entity = BeanUtils.cloneProp(getSubTaskInstanceResponse,SubTaskInstanceEntity.class);
+        SubTaskInstanceEntity entity = BeanUtils.cloneProp(getSubTaskInstanceResponse.getData(),SubTaskInstanceEntity.class);
         entity.setEnv(env);
         if (request.getDataTotalCount() != null) {
             entity.setDataTotalCount(request.getDataTotalCount());

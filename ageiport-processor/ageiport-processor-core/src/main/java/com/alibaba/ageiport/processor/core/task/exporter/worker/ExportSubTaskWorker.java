@@ -2,6 +2,7 @@ package com.alibaba.ageiport.processor.core.task.exporter.worker;
 
 import com.alibaba.ageiport.common.logger.Logger;
 import com.alibaba.ageiport.common.logger.LoggerFactory;
+import com.alibaba.ageiport.common.utils.CollectionUtils;
 import com.alibaba.ageiport.processor.core.AgeiPort;
 import com.alibaba.ageiport.processor.core.constants.TaskStatus;
 import com.alibaba.ageiport.processor.core.model.api.BizDataGroup;
@@ -26,6 +27,7 @@ import com.alibaba.ageiport.processor.core.task.exporter.model.ExportTaskSpecifi
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author lingyi
@@ -70,10 +72,16 @@ public class ExportSubTaskWorker<QUERY, DATA, VIEW> extends AbstractSubTaskWorke
             page.setSize(runtimeConfig.getPageSize());
             page.setAttributes(runtimeConfig.getAttributes());
             List<DATA> dataList = adapter.queryData(bizUser, query, page, exportTaskSpec.getProcessor(), context);
+            if(CollectionUtils.isNotEmpty(dataList)){
+                subTask.setDataTotalCount(dataList.size());
+            }
             context.goNextStageEventNew();
 
             context.goNextStageEventNew();
             List<VIEW> viewList = adapter.convert(bizUser, query, dataList, exportTaskSpec.getProcessor(), context);
+            if(CollectionUtils.isNotEmpty(viewList)){
+                subTask.setDataSuccessCount(viewList.size());
+            }
             context.goNextStageEventNew();
 
             context.goNextStageEventNew();
@@ -91,6 +99,9 @@ public class ExportSubTaskWorker<QUERY, DATA, VIEW> extends AbstractSubTaskWorke
 
             context.goNextStageEventNew();
             context.assertCurrentStage(stageProvider.subTaskFinished());
+
+            onFinished(context,subTask);
+
         } catch (Throwable e) {
             log.info("doMappingProcess failed, main:{}, sub:{}", subTask.getMainTaskId(), subTask.getSubTaskId(), e);
             subTask.setStatus(TaskStatus.ERROR).setResultMessage(e.getMessage()).setGmtFinished(new Date());

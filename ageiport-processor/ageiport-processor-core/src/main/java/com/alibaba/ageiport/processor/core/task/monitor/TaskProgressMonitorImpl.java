@@ -72,7 +72,6 @@ public class TaskProgressMonitorImpl implements TaskProgressMonitor {
         MainTaskStageProvider mainStageProvider = (MainTaskStageProvider) mainTaskStage.getStageProvider();
         Stage subTaskExecuteStart = mainStageProvider.subTaskExecuteStart();
         Stage subTaskExecuteEnd = mainStageProvider.subTaskExecuteEnd();
-
         Integer totalSubTaskCount = mainTaskProgress.getTotalSubTaskCount();
         if (totalSubTaskCount != null) {
             Integer currentFinishedSubTaskCount = 0;
