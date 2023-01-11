@@ -14,6 +14,7 @@ import com.alibaba.ageiport.processor.core.model.core.impl.ColumnHeadersImpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -64,6 +65,8 @@ public class HeadersUtil {
                     columnHeader.setGroupName(flatColumnHeader.getGroupName());
                     columnHeader.setErrorHeader(flatColumnHeader.isErrorHeader());
                     columnHeader.setRequired(flatColumnHeader.isRequired());
+                    columnHeader.setColumnWidth(flatColumnHeader.getColumnWidth());
+                    columnHeader.setValues(flatColumnHeader.getValues());
                     columnHeaders.add(columnHeader);
                     index++;
                 }
@@ -78,6 +81,8 @@ public class HeadersUtil {
                 columnHeader.setGroupName(bizColumnHeader.getGroupName());
                 columnHeader.setErrorHeader(bizColumnHeader.isErrorHeader());
                 columnHeader.setRequired(bizColumnHeader.isRequired());
+                columnHeader.setColumnWidth(bizColumnHeader.getColumnWidth());
+                columnHeader.setValues(bizColumnHeader.getValues());
                 columnHeaders.add(columnHeader);
                 index++;
             }
@@ -135,6 +140,7 @@ public class HeadersUtil {
                 columnHeader.setErrorHeader(viewField.isErrorHeader());
                 columnHeader.setRequired(viewField.isRequired());
                 columnHeader.setColumnWidth(viewField.columnWidth());
+                columnHeader.setValues(Arrays.asList(viewField.values()));
                 columnHeaders.add(columnHeader);
                 index++;
             }
