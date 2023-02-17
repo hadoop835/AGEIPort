@@ -126,9 +126,11 @@ public class MultiSheetExportProcessor implements ExportProcessor<Query, Data, V
         return group;
     }
 
+    @Override
     public BizExportTaskRuntimeConfig taskRuntimeConfig(BizUser user, Query query) throws BizException {
         final BizExportTaskRuntimeConfigImpl runtimeConfig = new BizExportTaskRuntimeConfigImpl();
         runtimeConfig.setExecuteType("STANDALONE");
         return runtimeConfig;
     }
+
 }
