@@ -99,6 +99,11 @@ public class CreateMainTaskInstanceRequest extends Request<CreateMainTaskInstanc
      */
     private String feature;
 
+    /**
+     * 扩展字段，JSON格式
+     */
+    private String feature;
+
     public CreateMainTaskInstanceRequest() {
         System.out.println("1");
     }

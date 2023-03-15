@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
             createMainTaskRequest.setExecuteType(executeType);
             createMainTaskRequest.setType(taskType);
             createMainTaskRequest.setName(taskSpec.getTaskName());
-            createMainTaskRequest.setHost(ageiPort.getClusterManager().getLocalNode().getIp());
+            createMainTaskRequest.setHost(ageiPort.getClusterManager().getLocalNode().getHost());
             String feature = createMainTaskRequest.getFeature();
             feature = FeatureUtils.putFeature(feature, MainTaskFeatureKeys.VERSION, Version.getVersion());
             feature = FeatureUtils.putFeature(feature, MainTaskFeatureKeys.LABELS, JsonUtil.toJsonString(param.getLabels()));
@@ -72,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
         } catch (Throwable e) {
             log.error("TaskService#executeTask failed, request:{}", param, e);
             TaskExecuteResult response = new TaskExecuteResult();
-            response.setSuccess(true);
+            response.setSuccess(false);
             response.setErrorMessage(e.getMessage());
             return response;
         }
