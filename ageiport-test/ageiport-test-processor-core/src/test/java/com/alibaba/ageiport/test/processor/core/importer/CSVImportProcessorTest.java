@@ -19,21 +19,25 @@ import java.util.HashMap;
 import java.util.UUID;
 
 @Slf4j
-public class ClusterImportProcessorTest {
+public class CSVImportProcessorTest {
 
+    //本例运行不会返回错误数据
     @SneakyThrows
     @Test
     public void test() {
+        //1.初始化AgeiPort实例
         AgeiPortOptions options = AgeiPortOptions.debug();
         AgeiPort ageiPort = AgeiPort.ageiPort(options);
 
-        String taskCode = ClusterImportProcessor.class.getSimpleName();
+        //2.读取文件，并上传到文件存储中
+        String taskCode = CSVImportProcessor.class.getSimpleName();
         TestHelper testHelper = new TestHelper(ageiPort);
-        String filePath = testHelper.file(taskCode + ".xlsx");
+        String filePath = testHelper.file(taskCode + ".csv");
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filePath);
         String fileKey = UUID.randomUUID().toString();
         ageiPort.getFileStore().save(fileKey, inputStream, new HashMap<>());
 
+        //3.构造查询参数TaskExecuteParam
         TaskExecuteParam request = new TaskExecuteParam();
         Query query = new Query();
         query.setTotalCount(100);
@@ -41,43 +45,48 @@ public class ClusterImportProcessorTest {
         request.setBizUserId("userId");
         request.setBizQuery(JsonUtil.toJsonString(query));
         request.setInputFileKey(fileKey);
+
+        //4.调用本地方法executeTask，开始执行任务，并获取任务实例ID
         TaskExecuteResult response = ageiPort.getTaskService().executeTask(request);
 
+        //5.使用内部封装的TaskHelp方法判断任务是否执行成功
         Assertions.assertTrue(response.getSuccess());
         testHelper.assertWithoutFile(response.getMainTaskId());
     }
 
+    //本例运行会返回错误数据
     @SneakyThrows
     @Test
     public void testHasCheckError() {
+        //1.初始化AgeiPort实例
         AgeiPortOptions options = AgeiPortOptions.debug();
         AgeiPort ageiPort = AgeiPort.ageiPort(options);
 
-        String taskCode = StandaloneImportProcessor.class.getSimpleName();
+        //2.读取文件，并上传到文件存储中
+        String taskCode = CSVImportProcessor.class.getSimpleName();
         TestHelper testHelper = new TestHelper(ageiPort);
-        String filePath = testHelper.file(taskCode + ".xlsx");
+        String filePath = testHelper.file(taskCode + ".csv");
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filePath);
         String fileKey = UUID.randomUUID().toString();
         ageiPort.getFileStore().save(fileKey, inputStream, new HashMap<>());
 
+        //3.构造查询参数TaskExecuteParam
         TaskExecuteParam request = new TaskExecuteParam();
         Query query = new Query();
-
-
         View view = new View();
         view.setId(1);
         view.setName("name1");
-
         query.setCheckErrorData(Lists.newArrayList(view));
         query.setTotalCount(100);
-        query.setCheckErrorDataWhenIdIn(Lists.newArrayList("1"));
-
         request.setTaskSpecificationCode(taskCode);
         request.setBizUserId("userId");
         request.setBizQuery(JsonUtil.toJsonString(query));
         request.setInputFileKey(fileKey);
+
+        //4.调用本地方法executeTask，开始执行任务，并获取任务实例ID
         TaskExecuteResult response = ageiPort.getTaskService().executeTask(request);
 
+        //5.使用内部封装的TaskHelp方法判断任务是否执行成功
         Assertions.assertTrue(response.getSuccess());
         testHelper.assertWithFile(response.getMainTaskId(), query.getErrorCount());
     }

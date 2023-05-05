@@ -21,10 +21,10 @@ import java.util.List;
 
 
 //1.实现ImportProcessor接口
-@ImportSpecification(code = "StandaloneImportProcessor", name = "StandaloneImportProcessor")
-public class StandaloneImportProcessor implements ImportProcessor<Query, Data, View> {
+@ImportSpecification(code = "CSVImportProcessor", name = "CSVImportProcessor", fileType = "csv")
+public class CSVImportProcessor implements ImportProcessor<Query, Data, View> {
 
-    Logger logger = LoggerFactory.getLogger(StandaloneImportProcessor.class);
+    Logger logger = LoggerFactory.getLogger(CSVImportProcessor.class);
 
     //2.实现ImportProcessor接口的convertAndCheck方法
     @Override
