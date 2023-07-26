@@ -194,13 +194,20 @@ public class ExportMainTaskWorker<QUERY, DATA, VIEW> extends AbstractMainTaskWor
             fileContext.setMainTask(mainTask);
             fileWriter = fileWriterFactory.create(ageiPort, columnHeaders, fileContext);
 
-            for (int i = 1; i <= mainTask.getSubTotalCount(); i++) {
-                String subTaskId = TaskIdUtil.genSubTaskId(mainTask.getMainTaskId(), i);
-                BigDataCacheManager bigDataCacheManager = ageiPort.getBigDataCacheManager();
-                BigDataCache cache = bigDataCacheManager.getBigDataCacheCache(mainTask.getExecuteType());
-                DataGroup dataGroup = cache.remove(subTaskId, DataGroup.class);
-                fileWriter.write(dataGroup);
+            // 判断如果子任务处理量不为空，写数据，否则空表头
+            if(mainTask.getSubTotalCount() > 0){
+                for (int i = 1; i <= mainTask.getSubTotalCount(); i++) {
+                    String subTaskId = TaskIdUtil.genSubTaskId(mainTask.getMainTaskId(), i);
+                    BigDataCacheManager bigDataCacheManager = ageiPort.getBigDataCacheManager();
+                    BigDataCache cache = bigDataCacheManager.getBigDataCacheCache(mainTask.getExecuteType());
+                    DataGroup dataGroup = cache.remove(subTaskId, DataGroup.class);
+                    fileWriter.write(dataGroup);
+                }
+            } else {
+                // 写表格表头和一行空数据
+                fileWriter.writeNullLine();
             }
+
 
             fileStream = fileWriter.finish();
             context.goNextStageEventNew();

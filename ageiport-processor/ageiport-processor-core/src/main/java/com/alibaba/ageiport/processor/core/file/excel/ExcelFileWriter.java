@@ -23,6 +23,7 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author lingyi
@@ -166,6 +167,26 @@ public class ExcelFileWriter implements FileWriter {
             List<List<Object>> lines = resolve(columnHeaders, data, sheetNo);
             excelWriter.write(lines, writeSheet);
         }
+    }
+
+    @Override
+    public void writeNullLine() {
+        // 表头
+        List<List<String>> head = columnHeaders.getColumnHeaders().stream()
+                .filter(s -> !s.getIgnoreHeader())
+                .map(ColumnHeader::getHeaderName)
+                .collect(Collectors.toList());
+
+        ExcelWriterSheetBuilder sheetBuilder = EasyExcel.writerSheet()
+                .sheetNo(0)
+                .sheetName(ConstValues.DEFAULT_SHEET_NAME)
+                .needHead(true)
+                .head(head);
+        // 行数据
+        List<List<Object>> lines = new ArrayList<>();
+        List<Object> result = head.stream().map(e -> "").collect(Collectors.toList());
+        lines.add(result);
+        excelWriter.write(lines, sheetBuilder.build());
     }
 
     @Override

@@ -10,6 +10,8 @@ public interface FileWriter extends Closeable {
 
     void write(DataGroup fileData);
 
+    void writeNullLine();
+
     InputStream finish();
 
 }
